@@ -1,0 +1,6 @@
+import JSP000554
+
+#print axioms JSP000554Independent.consecutive_13_17
+#print axioms JSP000554Independent.no_rough_integer_13_17
+#print axioms JSP000554Independent.jsp_000554_counterexample
+#print axioms JSP000554Independent.jsp_000554_not_universal
