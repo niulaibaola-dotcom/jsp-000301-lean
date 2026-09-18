@@ -29,7 +29,22 @@ GitHub Actions also compiles the proof and rejects source placeholders.
 
 ## Verification record
 
-A final pinned commit SHA and successful public GitHub Actions run should be recorded here after the repository is public.
+Pinned proof/verification commit:
+
+`1303ec1ae39b1908f8aa93b1eb0d95cdd83f1310`
+
+GitHub Actions verification run:
+
+`https://github.com/niulaibaola-dotcom/jsp-000301-lean/actions/runs/35298592998`
+
+The run completed successfully on 2026-09-18. It performed a full `lake build`, compiled `Audit.lean`, rejected `sorry` / `admit` and local `axiom` / `constant` declarations in the submitted proof/audit files, and reported:
+
+```text
+'JSP000301.jsp_000301_counterexample' depends on axioms:
+[propext, Classical.choice, Quot.sound]
+```
+
+The pinned commit contains the proof source, Lean/Mathlib version pins, audit file, and CI workflow used for this verification.
 
 ## Statement correctness
 
