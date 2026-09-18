@@ -1,0 +1,42 @@
+name: Verify JSP-000554 independent proof
+
+on:
+  push:
+    branches:
+      - jsp-000554-independent
+    paths:
+      - "jsp-000554/**"
+      - ".github/workflows/jsp000554-independent.yml"
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install elan
+        run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Fetch dependencies
+        working-directory: jsp-000554
+        run: |
+          lake update
+          lake exe cache get
+
+      - name: Build
+        working-directory: jsp-000554
+        run: lake build
+
+      - name: Axiom audit
+        working-directory: jsp-000554
+        run: lake env lean Audit.lean
+
+      - name: Reject proof holes and unsafe shortcuts
+        run: |
+          if grep -R -n -E '\\b(sorry|admit|native_decide|axiom)\\b' jsp-000554/*.lean; then
+            echo "Forbidden proof token found"
+            exit 1
+          fi
