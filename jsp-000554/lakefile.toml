@@ -1,0 +1,11 @@
+name = "jsp000554_independent"
+version = "0.1.0"
+defaultTargets = ["JSP000554"]
+
+[[lean_lib]]
+name = "JSP000554"
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4"
+rev = "v4.34.0"
