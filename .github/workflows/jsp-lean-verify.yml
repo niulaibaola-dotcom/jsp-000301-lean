@@ -30,12 +30,19 @@ jobs:
       - name: Restore mathlib build cache
         run: lake exe cache get
 
-      - name: Build proof
-        run: lake env lean JSP000301.lean
+      - name: Build project
+        run: lake build
 
-      - name: Reject placeholders
+      - name: Audit main theorem axioms
+        run: lake env lean Audit.lean
+
+      - name: Reject proof placeholders and local assumptions
         run: |
-          if grep -R -nE '\b(sorry|admit)\b' JSP000301.lean; then
-            echo "Forbidden placeholder found"
+          if grep -R -nE '\b(sorry|admit)\b' JSP000301.lean Audit.lean; then
+            echo "Forbidden proof placeholder found"
+            exit 1
+          fi
+          if grep -R -nE '^[[:space:]]*(axiom|constant)[[:space:]]' JSP000301.lean Audit.lean; then
+            echo "Forbidden local axiom/constant declaration found"
             exit 1
           fi
